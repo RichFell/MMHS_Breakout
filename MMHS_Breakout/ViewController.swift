@@ -14,11 +14,11 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     var pushBehavior = UIPushBehavior()
     var collisionBehavior = UICollisionBehavior()
     var ballBehavior = UIDynamicItemBehavior()
-    var allViewsArray = [UIView]()
-    var blockArray = [UIView]()
-    var paddleArray = [UIView]()
-    var ballArray = [UIView]()
-    var deletedBlockArray = [UIView]()
+    var allViewsArray = [BlockView]()
+    var blockArray = [BlockView]()
+    var paddleArray = [BlockView]()
+    var ballArray = [BlockView]()
+    var deletedBlockArray = [BlockView]()
     let restartControl = 56
 
     @IBOutlet var button: UIButton!
@@ -39,26 +39,27 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         {
             for i in 1...7
             {
-                let block = UIView(frame: CGRect(x: x, y: y, width: 40, height: 20))
+                let block = BlockView(frame: CGRect(x: x, y: y, width: 40, height: 20))
 
                 block.backgroundColor = UIColor.redColor()
                 view.addSubview(block)
                 view.bringSubviewToFront(block)
 
                 blockArray += block
+
                 x = x + 45
             }
             x = 5
             y = y + 25
         }
 
-        let paddle = UIView(frame: CGRect(x: 160, y: 450, width: 60, height: 20))
+        let paddle = BlockView(frame: CGRect(x: 160, y: 450, width: 60, height: 20))
         paddle.backgroundColor = UIColor.blueColor()
         view.addSubview(paddle)
         view.bringSubviewToFront(paddle)
         paddleArray += paddle
 
-        let ball = UIView(frame: CGRect(x: 160, y: 300, width: 10, height: 10))
+        let ball = BlockView(frame: CGRect(x: 160, y: 300, width: 10, height: 10))
         ball.backgroundColor = UIColor.blackColor()
         view.addSubview(ball)
         view.bringSubviewToFront(ball)
@@ -139,9 +140,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
             dynamicAnimator.updateItemUsingCurrentState(ball)
 
             restartAfterLose()
-
         }
-
     }
 
     //UICollisionBehaviorDelegate method that gets called when an obect makes contact with another object
@@ -153,17 +152,25 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         {
             if item1 == ball && item2 == block
             {
-                block.hidden = true
-                collisionBehavior.removeItem(block)
-                dynamicAnimator.updateItemUsingCurrentState(block)
-
-                deletedBlockArray += block
-
-                if deletedBlockArray.count == restartControl
+                if block.numberOfHits == 1
                 {
-                    resetAfterWin()
-                    deletedBlockArray.removeAll(keepCapacity: false)
+                    block.hidden = true
+                    collisionBehavior.removeItem(block)
+                    dynamicAnimator.updateItemUsingCurrentState(block)
+
+                    deletedBlockArray += block
+
+                    if deletedBlockArray.count == restartControl
+                    {
+                        resetAfterWin()
+                        deletedBlockArray.removeAll(keepCapacity: false)
+                    }
                 }
+                else
+                {
+                    block.backgroundColor = UIColor.blueColor()
+                }
+                block.numberOfHits++
             }
         }
     }
@@ -177,7 +184,17 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
             block.hidden = false
             collisionBehavior.addItem(block)
             dynamicAnimator.updateItemUsingCurrentState(block)
+            block.backgroundColor = UIColor.redColor()
+            block.numberOfHits = 0
+        }
 
+        for blockView in blockArray
+        {
+            if blockView.numberOfHits > 0
+            {
+                blockView.numberOfHits == 0
+                blockView.backgroundColor = UIColor.redColor()
+            }
         }
 
         button.hidden = false
@@ -204,9 +221,5 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         dynamicAnimator.updateItemUsingCurrentState(ball)
         givePush(ball)
     }
-
-
- 
-
 }
 

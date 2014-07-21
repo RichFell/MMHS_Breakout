@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9B3858D2197DBFD900657A40 /* BlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B3858D1197DBFD900657A40 /* BlockView.swift */; };
 		9B9C7710197873BE00F515C6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9C770F197873BE00F515C6 /* AppDelegate.swift */; };
 		9B9C7713197873BE00F515C6 /* MMHS_Breakout.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9B9C7711197873BE00F515C6 /* MMHS_Breakout.xcdatamodeld */; };
 		9B9C7715197873BF00F515C6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9C7714197873BF00F515C6 /* ViewController.swift */; };
@@ -26,6 +27,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9B3858D1197DBFD900657A40 /* BlockView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BlockView.swift; path = ../BlockView.swift; sourceTree = "<group>"; };
 		9B9C770A197873BE00F515C6 /* MMHS_Breakout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MMHS_Breakout.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B9C770E197873BE00F515C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9B9C770F197873BE00F515C6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 			children = (
 				9B9C770F197873BE00F515C6 /* AppDelegate.swift */,
 				9B9C7714197873BF00F515C6 /* ViewController.swift */,
+				9B3858D1197DBFD900657A40 /* BlockView.swift */,
 				9B9C7716197873BF00F515C6 /* Main.storyboard */,
 				9B9C7719197873BF00F515C6 /* Images.xcassets */,
 				9B9C7711197873BE00F515C6 /* MMHS_Breakout.xcdatamodeld */,
@@ -211,6 +214,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9B3858D2197DBFD900657A40 /* BlockView.swift in Sources */,
 				9B9C7715197873BF00F515C6 /* ViewController.swift in Sources */,
 				9B9C7710197873BE00F515C6 /* AppDelegate.swift in Sources */,
 				9B9C7713197873BE00F515C6 /* MMHS_Breakout.xcdatamodeld in Sources */,
@@ -401,6 +405,7 @@
 				9B9C772B197873BF00F515C6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9B9C772C197873BF00F515C6 /* Build configuration list for PBXNativeTarget "MMHS_BreakoutTests" */ = {
 			isa = XCConfigurationList;
@@ -409,6 +414,7 @@
 				9B9C772E197873BF00F515C6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
