@@ -20,7 +20,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     var ballArray = [UIView]()
     var deletedBlockArray = [UIView]()
 
-    @IBOutlet var button: UIButton
+    @IBOutlet var button: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -124,7 +124,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     }
 
 
-    //CollisionBehaviorDelegate function that gets called when an object makes contact with the boundary of our view
+    //CollisionBehaviorDelegate method that gets called when an object makes contact with the boundary of our view
     func collisionBehavior(behavior: UICollisionBehavior!, beganContactForItem item: UIDynamicItem!, withBoundaryIdentifier identifier: NSCopying!, atPoint p: CGPoint)
     {
         let ball = ballArray[0]
@@ -143,7 +143,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
 
     }
 
-    //UICollisionBehaviorDelegate function that gets called when an obect makes contact with another object
+    //UICollisionBehaviorDelegate method that gets called when an obect makes contact with another object
     func collisionBehavior(behavior: UICollisionBehavior!, beganContactForItem item1: UIView!, withItem item2: UIView!, atPoint p: CGPoint)
     {
         let ball = ballArray[0]
