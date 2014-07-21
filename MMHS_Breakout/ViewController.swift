@@ -19,6 +19,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     var paddleArray = [UIView]()
     var ballArray = [UIView]()
     var deletedBlockArray = [UIView]()
+    let restartControl = 56
 
     @IBOutlet var button: UIButton!
     override func viewDidLoad() {
@@ -124,7 +125,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     }
 
 
-    //CollisionBehaviorDelegate method that gets called when an object makes contact with the boundary of our view
+//    CollisionBehaviorDelegate method that gets called when an object makes contact with the boundary of our view
     func collisionBehavior(behavior: UICollisionBehavior!, beganContactForItem item: UIDynamicItem!, withBoundaryIdentifier identifier: NSCopying!, atPoint p: CGPoint)
     {
         let ball = ballArray[0]
@@ -157,6 +158,12 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
                 dynamicAnimator.updateItemUsingCurrentState(block)
 
                 deletedBlockArray += block
+
+                if deletedBlockArray.count == restartControl
+                {
+                    resetAfterWin()
+                    deletedBlockArray.removeAll(keepCapacity: false)
+                }
             }
         }
     }
@@ -174,6 +181,17 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         }
 
         button.hidden = false
+        deletedBlockArray.removeAll(keepCapacity: false)
+    }
+
+    func resetAfterWin()
+    {
+        for block in deletedBlockArray
+        {
+            block.hidden = false
+            collisionBehavior.addItem(block)
+            dynamicAnimator.updateItemUsingCurrentState(block)
+        }
         deletedBlockArray.removeAll(keepCapacity: false)
     }
 
