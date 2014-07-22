@@ -111,15 +111,15 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         let ball = ballArray[0]
         let paddle = paddleArray[0]
 
-//        if ball.center.y >  paddle.center.y
-//        {
-//            ball.center = view.center
-//            ballBehavior.resistance = 100
-//
-//            dynamicAnimator.updateItemUsingCurrentState(ball)
-//
-//            restartAfterLose()
-//        }
+        if ball.center.y >  paddle.center.y
+        {
+            ball.center = view.center
+            ballBehavior.resistance = 100
+
+            dynamicAnimator.updateItemUsingCurrentState(ball)
+
+            restartAfterLose()
+        }
     }
 
     //UICollisionBehaviorDelegate method that gets called when an obect makes contact with another object
@@ -194,12 +194,6 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         deletedBlockArray.removeAll(keepCapacity: false)
         button.hidden = false
         createLevelTwo()
-//        for block in deletedBlockArray
-//        {
-//            block.hidden = false
-//            collisionBehavior.addItem(block)
-//            dynamicAnimator.updateItemUsingCurrentState(block)
-//        }
 
     }
 
