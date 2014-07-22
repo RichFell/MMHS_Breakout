@@ -19,7 +19,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     var paddleArray = [BlockView]()
     var ballArray = [BlockView]()
     var deletedBlockArray = [BlockView]()
-    let restartControl = 56
+    var restartControl = Int()
 
     @IBOutlet var button: UIButton!
     override func viewDidLoad() {
@@ -39,13 +39,9 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         {
             for i in 1...7
             {
-                let block = BlockView(frame: CGRect(x: x, y: y, width: 40, height: 20))
-
+                let block = createBlock(x, y: y, width: 40, height: 20)
                 block.backgroundColor = UIColor.redColor()
-                view.addSubview(block)
-                view.bringSubviewToFront(block)
-
-                blockArray += block
+                restartControl++
 
                 x = x + 45
             }
@@ -53,24 +49,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
             y = y + 25
         }
 
-        let paddle = BlockView(frame: CGRect(x: 160, y: 450, width: 60, height: 20))
-        paddle.backgroundColor = UIColor.blueColor()
-        view.addSubview(paddle)
-        view.bringSubviewToFront(paddle)
-        paddleArray += paddle
-
-        let ball = BlockView(frame: CGRect(x: 160, y: 300, width: 10, height: 10))
-        ball.backgroundColor = UIColor.blackColor()
-        view.addSubview(ball)
-        view.bringSubviewToFront(ball)
-        ballArray += ball
-
-        allViewsArray += [paddle, ball]
-        allViewsArray += blockArray
-
-        addDynamicBehavior(ball, paddleView: paddle)
-
-
+        createPaddleAndBall(160, paddleY: 450, paddleWidth: 60, paddleHeight: 20, ballX: 160, ballY: 300, ballWidth: 10, ballHeight: 10)
     }
 
 
@@ -132,15 +111,15 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         let ball = ballArray[0]
         let paddle = paddleArray[0]
 
-        if ball.center.y >  paddle.center.y
-        {
-            ball.center = view.center
-            ballBehavior.resistance = 100
-
-            dynamicAnimator.updateItemUsingCurrentState(ball)
-
-            restartAfterLose()
-        }
+//        if ball.center.y >  paddle.center.y
+//        {
+//            ball.center = view.center
+//            ballBehavior.resistance = 100
+//
+//            dynamicAnimator.updateItemUsingCurrentState(ball)
+//
+//            restartAfterLose()
+//        }
     }
 
     //UICollisionBehaviorDelegate method that gets called when an obect makes contact with another object
@@ -150,8 +129,10 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
 
         for block in blockArray
         {
-            if item1 == ball && item2 == block
+            if item1 == block && item2 == ball
             {
+                println("evaluate true")
+
                 if block.numberOfHits == 1
                 {
                     block.hidden = true
@@ -201,15 +182,25 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         deletedBlockArray.removeAll(keepCapacity: false)
     }
 
+    //Helper function to reset the game after all of the blocks have been deleted
     func resetAfterWin()
     {
-        for block in deletedBlockArray
-        {
-            block.hidden = false
-            collisionBehavior.addItem(block)
-            dynamicAnimator.updateItemUsingCurrentState(block)
-        }
+
+        ballBehavior.resistance = 100
+
+        let ball = ballArray[0]
+        dynamicAnimator.updateItemUsingCurrentState(ball)
+        ballArray.removeAll(keepCapacity: false)
         deletedBlockArray.removeAll(keepCapacity: false)
+        button.hidden = false
+        createLevelTwo()
+//        for block in deletedBlockArray
+//        {
+//            block.hidden = false
+//            collisionBehavior.addItem(block)
+//            dynamicAnimator.updateItemUsingCurrentState(block)
+//        }
+
     }
 
     //IBAction attached to our button that will dictate starting the game, and restarting
@@ -220,6 +211,71 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         ballBehavior.resistance = 0.0
         dynamicAnimator.updateItemUsingCurrentState(ball)
         givePush(ball)
+    }
+
+    //Helper function to create the blocks
+    func createBlock(x:Int, y: Int, width: Int, height: Int)-> BlockView
+    {
+        let block = BlockView(frame: CGRect(x: x, y: y, width: width, height: height))
+        view.addSubview(block)
+        view.bringSubviewToFront(block)
+        allViewsArray += block
+        blockArray += block
+
+        return block
+    }
+
+    //Helper function to create the paddle and ball
+    func createPaddleAndBall(paddleX: Int, paddleY:Int, paddleWidth: Int, paddleHeight: Int, ballX:Int, ballY:Int, ballWidth:Int, ballHeight:Int)
+    {
+        let paddle = BlockView(frame: CGRect(x: paddleX, y: paddleY, width: paddleWidth, height: paddleHeight))
+        view.addSubview(paddle)
+        view.bringSubviewToFront(paddle)
+        allViewsArray += paddle
+        paddle.backgroundColor = UIColor.blueColor()
+        paddleArray += paddle
+
+        let ball = BlockView(frame: CGRect(x: ballX, y: ballY, width: ballWidth, height: ballHeight))
+        view.addSubview(ball)
+        view.bringSubviewToFront(ball)
+        allViewsArray += ball
+        ball.backgroundColor = UIColor.blackColor()
+        ballArray += ball
+
+        addDynamicBehavior(ball, paddleView: paddle)
+
+    }
+
+    //Function to create our second level
+    func createLevelTwo()
+    {
+        var x = 5
+        var y = 13
+
+        for var e = 0; e < 12; e++
+        {
+            for i in 1...9
+            {
+                if i % 2 == 0
+                {
+                    let block = createBlock(x, y: y, width: 20, height: 10)
+                    block.backgroundColor = UIColor.greenColor()
+                    x = x + 20
+
+                }
+                else
+                {
+                    let block = createBlock(x, y: y, width: 30, height: 10)
+                    block.backgroundColor = UIColor.magentaColor()
+                    x = x + 30
+                }
+            }
+            x = 2
+            y = y + 10
+
+        }
+        createPaddleAndBall(160, paddleY: 450, paddleWidth: 30, paddleHeight: 20, ballX: 300, ballY: 300, ballWidth: 8, ballHeight: 8)
+
     }
 }
 
