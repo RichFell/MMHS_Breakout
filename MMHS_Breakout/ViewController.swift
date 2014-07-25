@@ -8,6 +8,27 @@
 
 import UIKit
 
+extension UIColor
+    {
+    class func ballColor() -> UIColor
+    {
+        return UIColor(red: 98/255.0, green: 255/255.0, blue: 57/255.0, alpha: 1.0)
+    }
+    class func paddleColor() -> UIColor
+    {
+        return UIColor(red: 205/205.0, green: 205/205.0, blue: 205/205.0, alpha: 1.0)
+    }
+    class func blockColor() -> UIColor
+    {
+        return UIColor(red: 249/255.0, green: 99/255.0, blue: 210/255.0, alpha: 1.0)
+    }
+    class func blockHitColor() -> UIColor
+    {
+        return UIColor(red: 222/255.0, green: 245/255.0, blue: 32/255.0, alpha: 1.0)
+    }
+
+}
+
 class ViewController: UIViewController, UICollisionBehaviorDelegate {
 
     var dynamicAnimator = UIDynamicAnimator()
@@ -19,13 +40,20 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
     var paddleArray = [BlockView]()
     var ballArray = [BlockView]()
     var deletedBlockArray = [BlockView]()
-    var restartControl = Int()
+    var restartControl : Int = 0
 
     @IBOutlet var button: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        createBlocksPaddleAndBall()
+        let imageView = UIImageView(frame: CGRect(origin:CGPoint(x: 0.0, y: 0.0), size: view.frame.size))
+        imageView.image = UIImage(named: "SpaceImage")
+        view.addSubview(imageView)
+
+        view.bringSubviewToFront(button)  
+
+          createBlocksPaddleAndBall()
+        button.tintColor = UIColor.blockColor()
 
     }
 
@@ -40,7 +68,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
             for i in 1...7
             {
                 let block = createBlock(x, y: y, width: 40, height: 20)
-                block.backgroundColor = UIColor.redColor()
+                block.backgroundColor = UIColor.blockColor()
                 restartControl++
 
                 x = x + 45
@@ -149,7 +177,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
                 }
                 else
                 {
-                    block.backgroundColor = UIColor.blueColor()
+                    block.backgroundColor = UIColor.blockHitColor()
                 }
                 block.numberOfHits++
             }
@@ -165,7 +193,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
             block.hidden = false
             collisionBehavior.addItem(block)
             dynamicAnimator.updateItemUsingCurrentState(block)
-            block.backgroundColor = UIColor.redColor()
+            block.backgroundColor = UIColor.blockColor()
             block.numberOfHits = 0
         }
 
@@ -173,8 +201,8 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         {
             if blockView.numberOfHits > 0
             {
-                blockView.numberOfHits == 0
-                blockView.backgroundColor = UIColor.redColor()
+                blockView.numberOfHits = 0
+                blockView.backgroundColor = UIColor.blockColor()
             }
         }
 
@@ -226,14 +254,19 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         view.addSubview(paddle)
         view.bringSubviewToFront(paddle)
         allViewsArray += paddle
-        paddle.backgroundColor = UIColor.blueColor()
+        paddle.backgroundColor = UIColor.paddleColor()
+
+        paddle.layer.cornerRadius = 10.0
+
         paddleArray += paddle
 
         let ball = BlockView(frame: CGRect(x: ballX, y: ballY, width: ballWidth, height: ballHeight))
         view.addSubview(ball)
         view.bringSubviewToFront(ball)
         allViewsArray += ball
-        ball.backgroundColor = UIColor.blackColor()
+        ball.backgroundColor = UIColor.ballColor()
+
+        ball.layer.cornerRadius = 5.0
         ballArray += ball
 
         addDynamicBehavior(ball, paddleView: paddle)
@@ -253,14 +286,14 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
                 if i % 2 == 0
                 {
                     let block = createBlock(x, y: y, width: 20, height: 10)
-                    block.backgroundColor = UIColor.greenColor()
+                    block.backgroundColor = UIColor.blockColor()
                     x = x + 20
 
                 }
                 else
                 {
                     let block = createBlock(x, y: y, width: 30, height: 10)
-                    block.backgroundColor = UIColor.magentaColor()
+                    block.backgroundColor = UIColor.blockHitColor()
                     x = x + 30
                 }
             }
