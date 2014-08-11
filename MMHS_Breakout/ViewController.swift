@@ -136,6 +136,8 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
 //    CollisionBehaviorDelegate method that gets called when an object makes contact with the boundary of our view
     func collisionBehavior(behavior: UICollisionBehavior!, beganContactForItem item: UIDynamicItem!, withBoundaryIdentifier identifier: NSCopying!, atPoint p: CGPoint)
     {
+
+        println(identifier)
         let ball = ballArray[0]
         let paddle = paddleArray[0]
 
@@ -167,7 +169,7 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
                     collisionBehavior.removeItem(block)
                     dynamicAnimator.updateItemUsingCurrentState(block)
 
-                    deletedBlockArray += block
+                    deletedBlockArray.append(block)
 
                     if deletedBlockArray.count == restartControl
                     {
@@ -241,8 +243,8 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         let block = BlockView(frame: CGRect(x: x, y: y, width: width, height: height))
         view.addSubview(block)
         view.bringSubviewToFront(block)
-        allViewsArray += block
-        blockArray += block
+        allViewsArray.append(block)
+        blockArray.append(block)
 
         return block
     }
@@ -253,29 +255,32 @@ class ViewController: UIViewController, UICollisionBehaviorDelegate {
         let paddle = BlockView(frame: CGRect(x: paddleX, y: paddleY, width: paddleWidth, height: paddleHeight))
         view.addSubview(paddle)
         view.bringSubviewToFront(paddle)
-        allViewsArray += paddle
+        allViewsArray.append(paddle)
         paddle.backgroundColor = UIColor.paddleColor()
 
         paddle.layer.cornerRadius = 10.0
 
-        paddleArray += paddle
+        paddleArray.append(paddle)
 
         let ball = BlockView(frame: CGRect(x: ballX, y: ballY, width: ballWidth, height: ballHeight))
         view.addSubview(ball)
         view.bringSubviewToFront(ball)
-        allViewsArray += ball
+        allViewsArray.append(ball)
         ball.backgroundColor = UIColor.ballColor()
 
         ball.layer.cornerRadius = 5.0
-        ballArray += ball
+        ballArray.append(ball)
 
         addDynamicBehavior(ball, paddleView: paddle)
+
+        let snapBehavior = UISnapBehavior(item: ball, snapToPoint: CGPointMake(160, 160))
 
     }
 
     //Function to create our second level
     func createLevelTwo()
     {
+
         var x = 5
         var y = 13
 

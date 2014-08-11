@@ -8,14 +8,8 @@
 
 import UIKit
 
-class BlockView: UIView {
+class BlockView: UIView
+{
     var numberOfHits = 0
-
-    init(frame: CGRect) {
-        super.init(frame: frame)
-        // Initialization code
-    }
-
-
 
 }
